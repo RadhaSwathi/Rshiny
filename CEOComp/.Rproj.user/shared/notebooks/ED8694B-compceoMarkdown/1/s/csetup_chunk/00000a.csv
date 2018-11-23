@@ -1,0 +1,6 @@
+"1","
+"
+"1","rd_xcl> # Recycle a single column type
+rd_xcl> read_excel(datasets, col_types = ""text"")"
+"1","
+"

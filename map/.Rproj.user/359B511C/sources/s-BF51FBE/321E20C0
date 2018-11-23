@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1532178530553.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "321E20C0",
+    "lastKnownWriteTime" : 1529841470,
+    "last_content_update" : 1529841470,
+    "path" : "~/Predictivemodelling/classpractice2.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "26,3",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

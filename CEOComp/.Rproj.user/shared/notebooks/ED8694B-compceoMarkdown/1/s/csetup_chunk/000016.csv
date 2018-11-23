@@ -1,0 +1,6 @@
+"1","
+"
+"1","rd_xcl> # Specify the sheet as part of the range
+rd_xcl> read_excel(datasets, range = ""mtcars!B1:D5"")"
+"1","
+"

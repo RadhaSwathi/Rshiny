@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1532161204254.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "630E5FA0",
+    "lastKnownWriteTime" : 1532203477,
+    "last_content_update" : 1532203477970,
+    "path" : "~/Predictivemodelling/Asssignment1.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "50,41",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

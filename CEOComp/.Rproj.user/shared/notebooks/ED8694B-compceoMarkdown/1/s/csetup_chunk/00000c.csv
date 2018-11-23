@@ -1,0 +1,6 @@
+"1","
+"
+"1","rd_xcl> # Specify some col_types and guess others
+rd_xcl> read_excel(datasets, col_types = c(""text"", ""guess"", ""numeric"", ""guess"", ""guess""))"
+"1","
+"

@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1532339413134.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "AA2E7718",
+    "lastKnownWriteTime" : 9,
+    "last_content_update" : 1532339413134,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "4E9C6D40",
+        "caption" : "Shortlist",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=Shortlist&cache_key=4E9C6D40",
+        "displayedObservations" : "32",
+        "environment" : "",
+        "object" : "Shortlist",
+        "preview" : "0",
+        "totalObservations" : "32",
+        "variables" : "14"
+    },
+    "relative_order" : 13,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

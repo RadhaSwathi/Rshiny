@@ -1,0 +1,52 @@
+---
+title: "CEO COPMPENSATION"
+author: "Radha Swathi K"
+date: "4/1/2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## R Markdown
+
+ABC INC   is hiring new CEO and analysis for appropriate compensation is done by def Inc.
+
+194 CEO compensation data was collected for analysis from a recent survey.
+
+Data Source: AB Consulting company
+
+## Slide with Bullets
+
+
+- Collect the data from top 190 relavent companies 
+- Bullet 2
+- Bullet 3
+
+## Slide with R Output
+
+```{r CEO, echo = FALSE}
+library(readxl)
+CEO <- read_excel("/Users/rsklanu/Downloads/CEO.xlsx")
+attach(CEO)
+summary(CEO)
+```
+
+## Slide with Plot
+
+```{r COMPENSATION}
+boxplot(Compensation,col="red",xlab="CEOs",ylab="compensation")
+```
+
+## Slide with Plot contd..
+
+```{r copm}
+hist(Compensation,col="red",xlab="compensation",ylab="company")
+```
+
+## Slide with Plot contds..
+
+```{r copmp}
+plot(Compensation,col="yellow",xlab="company",ylab="compensation")
+```

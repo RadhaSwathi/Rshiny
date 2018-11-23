@@ -1,0 +1,6 @@
+"1","
+"
+"1","rd_xcl> # Read from an Excel range using A1 or R1C1 notation
+rd_xcl> read_excel(datasets, range = ""C1:E7"")"
+"1","
+"

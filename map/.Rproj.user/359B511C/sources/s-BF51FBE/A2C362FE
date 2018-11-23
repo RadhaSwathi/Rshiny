@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1532323612797.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "A2C362FE",
+    "lastKnownWriteTime" : 1532340955,
+    "last_content_update" : 1532340955288,
+    "path" : "~/Rshiny/Myproject/cwh.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "75,32",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 10,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

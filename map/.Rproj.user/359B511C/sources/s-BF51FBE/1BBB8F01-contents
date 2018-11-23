@@ -1,0 +1,172 @@
+#
+# This is a Shiny web application. You can run the application by clicking
+# the 'Run App' button above.
+#
+# Find out more about building applications with Shiny here:
+#
+#    http://shiny.rstudio.com/
+#
+
+library(shiny)
+library(readxl)
+library(rsconnect)
+library(ggmap)
+library(ggplot2)
+library(shinyjs)
+library(readxl)
+library(googleway)
+
+if (interactive()) {
+  ui <- fluidPage(theme = "bootstrap.css",
+    # App title ----
+    #titlePanel("L&T Constructions"),
+    
+    # Sidebar layout with a input and output definitions ----
+    useShinyjs(),
+    sidebarLayout(
+      
+      # Sidebar panel for inputs ----
+      sidebarPanel(
+    # Input: Selector for choosing dataset ----
+        selectInput(inputId = "Method",
+                    label = 'Construction type:',
+                    choices = c("ESR", "WTP","CWR","CWPH","Intake")),
+        # Input: Selector for choosing dataset ----
+        selectInput(inputId = "Zone",
+                    label ='Choose a zone:',
+                    choices = c("Zone-2", "Zone-3")),
+        textInput( inputId="Wind", label = "Wind", placeholder = "Wind speed in m/sec"),
+        textInput( inputId="SBC", label ="SBC", placeholder ="SBC"),
+        conditionalPanel(
+          condition= "input.Method=='ESR'",
+        textInput( inputId="Height", label ="Height", placeholder = "Height")),
+        conditionalPanel(
+          condition= "input.Method!='CWPH'",
+        sliderInput(inputId = "Capacity",
+                    label = "Capacity",
+                    min = 0,
+                    max = 10000,
+                    value = 1)),
+        actionButton("run", "Run Analysis", icon("paper-plane"), 
+                     style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
+      ),
+      
+      
+      # Main panel for displaying outputs ----
+      mainPanel(
+        # Output: Verbatim text for data summary ----
+        verbatimTextOutput("summary"),
+        google_mapOutput(outputId ="map1")
+       
+
+        
+      )
+    )
+  )
+
+# Define server logic required to draw a histogram
+server <- function(input, output,session) {
+  key<-'AIzaSyDgxiDHIHZLWKZvd3-WyphRbLrhsdDvJLs'
+  # Generate a summary of the dataset ----
+  output$summary <- renderText({
+      paste("Construction Method = ",input$Method,
+            "\nZone = ",input$Zone,
+            "\nWind ="," ",{input$Wind},
+            randomVals())
+
+  })
+  
+  
+  output$map1 <- renderGoogle_map({
+    india= google_geocode('india',key=key)
+    india= geocode_coordinates(india)
+    coord=cbind(india$lat,india$lng)
+      if(input$Method=="ESR")
+        df<-read_excel("/Users/rsklanu/Rshiny/Myproject/Data.xlsx", sheet = "ESR")
+      if (input$Method=="WTP")
+        df<-read_excel("/Users/rsklanu/Rshiny/Myproject/Data.xlsx", sheet = "WTP")
+      if (input$Method=="CWR")
+        df<-read_excel("/Users/rsklanu/Rshiny/Myproject/Data.xlsx", sheet = "CWR")
+      if (input$Method=="CWPH")
+        df<-read_excel("/Users/rsklanu/Rshiny/Myproject/Data.xlsx", sheet = "CWPH")
+      if (input$Method=="Intake")
+        df<-read_excel("/Users/rsklanu/Rshiny/Myproject/Data.xlsx", sheet = "Intake")
+    df_coords=as.data.frame(cbind(df$Lat,df$Lon))
+  map= google_map(location = coord,data =df_coords, zoom = 4, key=key)%>%
+    clear_markers() %>%
+      add_markers(data = df_coords,lat = "V1", lon = "V2")
+  })
+  
+  
+  # output$mymap <- renderPlot({
+  #   if(input$Method=="ESR")
+  #     df<-read_excel("/Users/rsklanu//Rshiny/Myproject/Data.xlsx", sheet = "ESR")
+  #   if (input$Method=="WTP")
+  #     df<-read_excel("/Users/rsklanu//Rshiny/Myproject/Data.xlsx", sheet = "WTP") 
+  #   if (input$Method=="CWR")
+  #     df<-read_excel("/Users/rsklanu//Rshiny/Myproject/Data.xlsx", sheet = "CWR") 
+  #   if (input$Method=="CWPH")
+  #     df<-read_excel("/Users/rsklanu//Rshiny/Myproject/Data.xlsx", sheet = "CWPH") 
+  #   if (input$Method=="Intake")
+  #     df<-read_excel("/Users/rsklanu//Rshiny/Myproject/Data.xlsx", sheet = "Intake")
+  #     geodata<-as.data.frame(cbind(df$Lon,df$Lat))
+  #    
+  #   india= as.numeric(geocode("India"))
+  #   
+  #   p=ggmap(get_map(india,zoom=5))
+  # p =p + geom_point(data = geodata,aes(x=V1,y=V2), size=2, colour= "Red")
+  #   p
+  # })
+  
+  
+ 
+  observe(input$Method{
+   
+  })
+  randomVals <- eventReactive(input$run, {
+  if(input$Method=="CWR")
+  {
+    Shortlist <- read_excel("~/Desktop/Shortlist.xlsx", 
+                                       sheet = "CWR", col_types = c("blank", 
+                                                                    "blank", "text", "blank", "text", 
+                                                                    "numeric", "numeric", "text", "blank", 
+                                                                    "numeric", "numeric", "numeric", 
+                                                                    "numeric", "numeric", "numeric", 
+                                                                    "numeric", "numeric", "numeric"));
+    cwr<- Shortlist[c(2,3,6,7)]
+     PCapacity = input$Capacity;
+     PSesimicZone = input$Zone;
+     resultPCC<-lm(PCC ~ `Capacity(inKL)` + SesimicZone, data=cwr)
+     pred_grid <- expand.grid(`Capacity(inKL)` = PCapacity, SesimicZone = PSesimicZone)
+     predictionPCC <- predict(resultPCC, newdata = pred_grid )
+    
+     cwrRCC<- Shortlist[c(2,3,6,8)]
+     resultRCC<-lm(RCC ~ `Capacity(inKL)` + SesimicZone, data=cwrRCC)
+     pred_gridRCC <- expand.grid(`Capacity(inKL)` = PCapacity, SesimicZone = PSesimicZone)
+     predictionRCC <- predict(resultRCC, newdata = pred_gridRCC )
+     
+     
+     cwrFw<- Shortlist[c(2,3,6,9)]
+     resultFrmwrk<-lm(Formwork ~ `Capacity(inKL)` + SesimicZone, data=cwrFw)
+     pred_gridFw <- expand.grid(`Capacity(inKL)` = PCapacity, SesimicZone = PSesimicZone)
+     predictionFw <- predict(resultFrmwrk, newdata = pred_gridFw )
+     
+     cwrSteel<- Shortlist[c(2,3,6,10)]
+     resultSteel<-lm(`R/fSteel` ~ `Capacity(inKL)` + SesimicZone, data=cwrSteel)
+     pred_gridSteel<- expand.grid(`Capacity(inKL)` = PCapacity, SesimicZone = PSesimicZone)
+     predictionSteel <- predict(resultSteel, newdata = pred_gridSteel )
+     print(paste("\nPCC = ",predictionPCC,"\nRCC = ",predictionRCC,"\nFormwork = ",predictionFw,"\nr/fSteel = ",predictionSteel))
+  }
+    
+    
+  })
+  
+  
+}
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server, options = list(height = 1080))
+
+
+

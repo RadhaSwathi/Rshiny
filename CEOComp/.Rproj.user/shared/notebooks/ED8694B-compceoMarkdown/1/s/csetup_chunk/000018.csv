@@ -1,0 +1,6 @@
+"1","
+"
+"1","rd_xcl> # Read only specific rows or columns
+rd_xcl> read_excel(datasets, range = cell_rows(102:151), col_names = FALSE)"
+"1","
+"

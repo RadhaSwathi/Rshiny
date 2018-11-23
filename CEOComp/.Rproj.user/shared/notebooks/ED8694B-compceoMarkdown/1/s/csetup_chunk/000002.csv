@@ -1,0 +1,12 @@
+"0","example(read_excel)
+"
+"1","
+"
+"1","rd_xcl> datasets <- readxl_example(""datasets.xlsx"")"
+"1","
+"
+"1","
+"
+"1","rd_xcl> read_excel(datasets)"
+"1","
+"

@@ -1,0 +1,129 @@
+#Load data
+library(ISLR)
+library(ggcorrplot)
+View(College)
+data(College)
+#univariate analysis
+summary(College) #no values missing
+corrdata<-round(cor(College[-1]),2)
+corrplot.mixed(corrdata, title = "Correlation matrix for test data")
+ggcorrplot(corrdata, type='full',lab=TRUE)
+
+
+#Histogram
+par(mfrow=c(1,1))
+hist(College$Grad.Rate)
+#Pairwise correlation
+pairs(round(cor(CollegeCont[-1]),2))
+summary(CollegeCont)
+set.seed(75)
+n=nrow(College)
+trainIndex<-sample(1:n, size = round(0.8781*n), replace=FALSE)
+traindata<-College[trainIndex,]
+testdata<-College[-trainIndex,]
+
+summary(traindata)
+
+nullfit<-lm(Grad.Rate~1,data= traindata)
+highfit<-lm(Grad.Rate~.,data= traindata)
+#Forward model
+train.fitFwd<-step(nullfit, scope=list(lower=nullfit, upper=highfit), direction="forward")
+summary(train.fitFwd)
+anova(train.fitFwd)
+##Step:  AIC=3451.61
+##Grad.Rate ~ Outstate + Top25perc + perc.alumni + P.Undergrad +Apps + Room.Board + Expend + Private + Personal
+#Residual standard error: 12.75 on 666 degrees of freedom
+#Multiple R-squared:  0.4658,	Adjusted R-squared:  0.4586 
+#F-statistic: 64.52 on 9 and 666 DF,  p-value: < 2.2e-16
+
+model1<-lm(Grad.Rate ~ Outstate + Top25perc + perc.alumni + P.Undergrad +Apps + Room.Board + Expend + Private+ Personal ,data= traindata)
+summary(model1)
+plot(model1)
+
+#backward model
+train.fitback<-step(highfit, scope=list(lower=nullfit, upper=highfit), direction="backward")
+
+##AIC=3451.61
+##Grad.Rate ~ Private + Apps + Top25perc + P.Undergrad + Outstate + Room.Board + Personal + perc.alumni + Expend
+##Residual standard error: 12.75 on 666 degrees of freedom
+##Multiple R-squared:  0.4658,	Adjusted R-squared:  0.4586 
+##F-statistic: 64.52 on 9 and 666 DF,  p-value: < 2.2e-16
+model2<-lm(Grad.Rate ~ Private + Apps + Top25perc + P.Undergrad + Outstate + Room.Board + Personal + perc.alumni + Expend,data=traindata)
+summary(model2)
+anova(model2)
+
+#stewise model
+trainstep <-step(nullfit, list(lower=nullfit,upper=highfit,direction="both"))
+#Grad.Rate ~ Outstate + Top25perc + perc.alumni + P.Undergrad + Apps + Room.Board + Expend + Private + Personal
+#AIC=3451.61
+model3<-lm(Grad.Rate ~ Outstate + Top25perc + perc.alumni + P.Undergrad + Apps + Room.Board + Expend + Private + Personal,data=traindata)
+summary(model3)
+#Residual standard error: 12.75 on 666 degrees of freedom
+#Multiple R-squared:  0.4658,	Adjusted R-squared:  0.4586 
+#F-statistic: 64.52 on 9 and 666 DF,  p-value: < 2.2e-16
+library(leaps)
+grad=regsubsets(Grad.Rate~., data=traindata, nbest=9)
+grad.sum<-summary(grad)
+names(grad.sum)
+grad.sum$adjr2
+#################RATIOS##############################
+summary(College) 
+CollegeCont<-College[c(-2,-3,-4)]
+appenrollrt<-College$Enroll/College$Apps
+appnaccprrt<-College$Accept/College$Apps
+summary(CollegeCont) 
+CollegeCont<-cbind(CollegeCont,appenrollrt,appnaccprrt)
+c<-cor(CollegeCont[-1])
+ggcorrplot(c, type='full',lab=TRUE)
+set.seed(75)
+nWI=nrow(CollegeCont)
+trainIndexWI<-sample(1:nWI, size = round(0.87*nWI), replace=FALSE)
+traindataWI<-College[trainIndexWI,]
+testdataWI<-College[-trainIndexWI,]
+
+nullfitWI<-lm(Grad.Rate~1,data= traindataWI)
+highfitWI<-lm(Grad.Rate~.,data= traindataWI)
+
+
+#Forward model
+trainWI.fitFwd<-step(nullfitWI, scope=list(lower=nullfitWI, upper=highfitWI), direction="forward")
+#Step:  AIC=3451.61
+#Grad.Rate ~ Outstate + Top25perc + perc.alumni + P.Undergrad + Apps + Room.Board + Expend + Private + Personal
+summary(trainWI.fitFwd)
+anova(trainWI.fitFwd)
+
+modelWI1<-lm(formula = Grad.Rate ~ Outstate + Top25perc + perc.alumni + 
+               P.Undergrad + Apps + Room.Board + Expend + Private + Personal, 
+             data = traindataWI)
+
+summary(modelWI1)
+anova(modelWI1)
+
+##Backward
+trainWI.fitback<-step(highfitWI, scope=list(lower=nullfitWI, upper=highfitWI), direction="backward")
+#Step:  AIC=3451.61
+#Grad.Rate ~ Private + Apps + Top25perc + P.Undergrad + Outstate + Room.Board + Personal + perc.alumni + Expend
+summary(trainWI.fitback)
+anova(trainWI.fitback)
+
+#Stepwise
+#Step:  AIC=3451.61
+#Grad.Rate ~ Outstate + Top25perc + perc.alumni + P.Undergrad + Apps + Room.Board + Expend + Private + Personal
+trainstepWI <-step(nullfitWI, list(lower=nullfitWI,upper=highfitWI,direction="both"))
+
+summary(trainstepWI)
+anova(trainstepWI)
+library(car)
+round(vif(trainstepWI),2)
+
+
+mm<-lm(1/(Grad.Rate) ~  1/(Top25perc + perc.alumni + P.Undergrad + Apps + Room.Board + Expend + Private + Personal), data=traindataWI)
+summary(mm)
+anova(mm)
+plot(mm)
+
+ff=regsubsets(Grad.Rate~., data=traindataWI, nbest=8)
+plot(ff, scale="adjr2")
+plot(ff, scale="bic")
+
+

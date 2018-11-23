@@ -1,0 +1,6 @@
+"1","
+"
+"1","rd_xcl> # Skip rows and use default column names
+rd_xcl> read_excel(datasets, skip = 148, col_names = FALSE)"
+"1","
+"

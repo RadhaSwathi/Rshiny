@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1532194643038.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "423ECB86",
+    "lastKnownWriteTime" : 1529834239,
+    "last_content_update" : 1529834239,
+    "path" : "~/Predictivemodelling/day2PPractice.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "90,40",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

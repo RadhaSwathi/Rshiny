@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1532194809093.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "85D7034A",
+    "lastKnownWriteTime" : 1529727674,
+    "last_content_update" : 1529727674,
+    "path" : "~/Predictivemodelling/DSEReg.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "101,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
